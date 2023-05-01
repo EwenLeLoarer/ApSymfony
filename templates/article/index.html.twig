@@ -21,7 +21,7 @@
 {% for article in articles %}
 
    
-        <div class="col">
+        <div class="col">   
             <p> {{article.nomArticle}} </p>
             <img src="{{article.imageUrl}}">
              <a href="{{ path('cart_add', {'id': article.id} )}}" class="btn btn-success" >Acheter</a> 
