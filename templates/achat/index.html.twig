@@ -8,13 +8,41 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<<table class="table">
+    <thead>
+        <tr>
+            <th>nom:</th>
+            <th>prix:</th>
+            <th>pointFidélité</th>
+            <th>quantité</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       {% for item in items %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/wamp64/www/apsymfony/src/Controller/AchatController.php'|file_link(0) }}">src/Controller/AchatController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/wamp64/www/apsymfony/templates/achat/index.html.twig'|file_link(0) }}">templates/achat/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <tr>
+            <td>{{item.article.nomArticle}}</td>
+            <td>{{item.article.PrixArticle}}€</td>
+            <td>{{item.article.PointArticle}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.article.PrixArticle * item.quantity}}€</td>
+            <td>
+                <a href="{{path('cart_remove', {'id': item.article.id})}}" class="btn btn-danger btn-sm">
+                <i class="bi bi-trash">supprimer</i>
+                </a> 
+            </td>
+        </tr>
+       {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Total : {{totalItem}} €</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
 {% endblock %}

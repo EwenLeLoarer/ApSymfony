@@ -11,7 +11,7 @@ use App\Repository\ArticleRepository;
 
 class AchatController extends AbstractController
 {
-    #[Route('/panier', name: 'app_achat')]
+    #[Route('/panier', name: 'cart_index')]
     public function index(SessionInterface $session, ArticleRepository $repo): Response
     {
         $panier = $session->get('panier', []);
@@ -25,14 +25,22 @@ class AchatController extends AbstractController
             ];
         }
 
-        dd($panierAvecData);
+        //dd($panierAvecData);
+        $total = 0;
 
+        foreach($panierAvecData as $item){
+            $totalItem = $item['article']->getPrixArticle() * $item['quantity'];
+            $total += $totalItem;
+        }
 
 
 
 
         return $this->render('achat/index.html.twig', [
             'controller_name' => 'AchatController',
+            'items' => $panierAvecData,
+            'totalItem' => $total
+
         ]);
     }
 
@@ -48,7 +56,20 @@ class AchatController extends AbstractController
         }
         $session->set('panier', $panier);
 
-        dd($session->get('panier'));
+        return $this->redirectToRoute("cart_index");
 
+    }
+
+    #[Route('/panier/remove/{id}', name: 'cart_remove')]
+    public function remove($id, SessionInterface $session){
+        $panier = $session->get('panier', []);
+
+        if(!empty($panier)){
+            unset($panier[$id]);
+        }
+
+        $session->set('panier',$panier);
+
+        return $this->redirectToRoute("cart_index");   
     }
 }
