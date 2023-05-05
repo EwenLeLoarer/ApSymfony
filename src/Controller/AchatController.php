@@ -38,9 +38,7 @@ class AchatController extends AbstractController
 
         return $this->render('achat/index.html.twig', [
             'controller_name' => 'AchatController',
-            'items' => $panierAvecData,
-            'totalItem' => $total
-
+            'items' => $panierAvecData
         ]);
     }
 
