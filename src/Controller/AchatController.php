@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Achat;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,16 +11,21 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
 use App\Repository\ArticleRepository;
 use App\Service\Cart\CartService;
+use App\Service\User\UserService;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AchatController extends AbstractController
 {
     #[Route('/panier', name: 'cart_index')]
-    public function index(SessionInterface $session,CartService $cartService): Response
+    public function index(SessionInterface $session,CartService $cartService, UserInterface $user
+    ): Response
     {
         $panier = $session->get('panier', []);
-
+        
+        
        $panierAvecData = $cartService->getFullCart();
-       $total = $cartService->getTotal();
+       $total = 0;
 
         foreach($panierAvecData as $item){
             $totalItem = $item['article']->getPrixArticle() * $item['quantity'];
@@ -38,7 +44,7 @@ class AchatController extends AbstractController
 
     #[Route('/panier/add/{id}', name: 'cart_add')]
     public function add($id, CartService $cartService){
-
+        $cartService->add($id);
         return $this->redirectToRoute("cart_index");  
     }
 
@@ -49,5 +55,11 @@ class AchatController extends AbstractController
         return $this->redirectToRoute("cart_index");
     }
 
+    #[Route('/panier/valider', name: 'cart_valider')]
+    public function validerAchat(UserService $userService, UserInterface $user){
+
+        $userService->AddAchat($user);
+        return new Response('Genus created');
+    }
 
 }

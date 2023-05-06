@@ -27,7 +27,7 @@ class Achat
 
     #[ORM\ManyToOne(inversedBy: 'lesAchats')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Client $leClient = null;
+    private ?User $leUser = null;
 
     #[ORM\OneToMany(mappedBy: 'leAchat', targetEntity: LigneAchat::class)]
     private Collection $lesLignesAchats;
@@ -78,14 +78,14 @@ class Achat
         return $this;
     }
 
-    public function getLeClient(): ?Client
+    public function getLeUser(): ?User
     {
-        return $this->leClient;
+        return $this->leUser;
     }
 
-    public function setLeClient(?Client $leClient): self
+    public function setLeUser(?User $leUser): self
     {
-        $this->leClient = $leClient;
+        $this->leUser = $leUser;
 
         return $this;
     }

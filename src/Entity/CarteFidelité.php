@@ -14,30 +14,17 @@ class CarteFidelité
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $numero_carte = null;
-
-    #[ORM\Column]
     private ?int $points = null;
 
     #[ORM\OneToOne(mappedBy: 'laCarteFidélité', cascade: ['persist', 'remove'])]
-    private ?Client $leClient = null;
+    private ?User $leUser = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumeroCarte(): ?int
-    {
-        return $this->numero_carte;
-    }
 
-    public function setNumeroCarte(int $numero_carte): self
-    {
-        $this->numero_carte = $numero_carte;
-
-        return $this;
-    }
 
     public function getPoints(): ?int
     {
@@ -51,24 +38,24 @@ class CarteFidelité
         return $this;
     }
 
-    public function getLeClient(): ?Client
+    public function getLeUser(): ?User
     {
-        return $this->leClient;
+        return $this->leUser;
     }
 
-    public function setLeClient(?Client $leClient): self
+    public function setLeUser(?User $leUser): self
     {
         // unset the owning side of the relation if necessary
-        if ($leClient === null && $this->leClient !== null) {
-            $this->leClient->setLaCarteFidélité(null);
+        if ($leUser === null && $this->leUser !== null) {
+            $this->leUser->setLaCarteFidélité(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($leClient !== null && $leClient->getLaCarteFidélité() !== $this) {
-            $leClient->setLaCarteFidélité($this);
+        if ($leUser !== null && $leUser->getLaCarteFidélité() !== $this) {
+            $leUser->setLaCarteFidélité($this);
         }
 
-        $this->leClient = $leClient;
+        $this->leUser = $leUser;
 
         return $this;
     }

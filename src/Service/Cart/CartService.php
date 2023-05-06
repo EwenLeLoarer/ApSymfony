@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CartService{
     protected $requestStack; 
     protected $articleRepo;
+    private $security;
 
     public function __construct(RequestStack $requestStack, ArticleRepository $repo){
         $this->requestStack = $requestStack;
@@ -48,6 +49,7 @@ class CartService{
                 'quantity' => $quantity
             ];
         }
+        
         return $panierAvecData;
     }
 
@@ -57,15 +59,18 @@ class CartService{
         foreach($this->getFullCart() as $item){
             $total += $item['article']->getPrixArticle() * $item['quantity'];
         }
+        dd($total);
         return $total;
    }
 
-   public function verifyUser() : float{
+   public function getTotalPoints() : int{
+    $total = 0;
 
-    
-
+    foreach($this->getFullCart() as $item){
+        $total += $item['article']->getPointArticle() * $item['quantity'];
+    }
+    return $total;
    }
-
 }
 
 ?>

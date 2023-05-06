@@ -29,6 +29,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?CarteFidelité $laCarteFidélité = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,5 +100,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getLaCarteFidélité(): ?CarteFidelité
+    {
+        return $this->laCarteFidélité;
+    }
+
+    public function setLaCarteFidélité(?CarteFidelité $laCarteFidélité): self
+    {
+        $this->laCarteFidélité = $laCarteFidélité;
+
+        return $this;
     }
 }
