@@ -4,6 +4,7 @@ namespace App\Service\User;
 
 use App\Entity\Achat;
 use App\Entity\LigneAchat;
+use App\Entity\CarteFidelité;
 use App\Service\Cart\CartService;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,6 +40,7 @@ class UserService{
         $em->flush();
 
         $this->AddAllLigneAchat($achat);
+        $this->AddPoints($user);
         return $achat;
 
     }
@@ -52,20 +54,41 @@ class UserService{
             $LigneAchat->setSousTotal($item['article']->getPrixArticle() * $item['quantity']);
             $LigneAchat->setSousTotalPoints($item['article']->getPointArticle() * $item['quantity']);
             
-            //$em = $this->doctrine->getManager();
-            //$em->persist($LigneAchat);
-            //$em->flush();
+            $em = $this->doctrine->getManager();
+            $em->persist($LigneAchat);
+            $em->flush();
         }
     }
 
-    public function addCarteFidélité(){
-        
+    public function addCarteFidélité($user){
+        if($user->getLaCarteFidélité() != null){
+            return 0;
+        }
+        $laCarte = new CarteFidelité();
+        $laCarte->setPoints(0);
+
+        $em = $this->doctrine->getManager();
+        $em->persist($laCarte);
+        $em->flush();
+
+        $user->setLaCarteFidélité($laCarte);
+        $em->persist($user);
+        $em->flush();
     }
 
-    public function addPointCarte(){
+    public function AddPoints($user){
+        $total = $this->cartService->getTotalPoints();
+        $user->getLaCarteFidélité()->setPoints($total);
+
+        $em = $this->doctrine->getManager();
+        $em->persist($user->getLaCarteFidélité());
+        $em->flush();
 
     }
 
+    public function getCarteFidélité($user){
+        return $user->getLaCarteFidélité();
+    }
 }
 
 

@@ -6,15 +6,17 @@ use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CartService{
     protected $requestStack; 
     protected $articleRepo;
-    private $security;
+    protected ManagerRegistry $doctrine;
 
-    public function __construct(RequestStack $requestStack, ArticleRepository $repo){
+    public function __construct(RequestStack $requestStack, ArticleRepository $repo, ManagerRegistry $doctrine){
         $this->requestStack = $requestStack;
         $this->articleRepo = $repo;
+        $this->doctrine = $doctrine;
     }
 
     public function add(int $id){
@@ -27,6 +29,9 @@ class CartService{
         }
         $this->requestStack->getSession()->set('panier', $panier);
     }
+
+
+
 
     public function remove(int $id){
         $panier = $this->requestStack->getSession()->get('panier', []);
@@ -59,7 +64,6 @@ class CartService{
         foreach($this->getFullCart() as $item){
             $total += $item['article']->getPrixArticle() * $item['quantity'];
         }
-        dd($total);
         return $total;
    }
 
@@ -71,6 +75,11 @@ class CartService{
     }
     return $total;
    }
+
+   public function viderCart(){
+    $this->requestStack->getSession()->set('panier', []);
+   }
+   
 }
 
 ?>

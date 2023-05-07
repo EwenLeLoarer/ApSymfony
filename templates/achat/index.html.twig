@@ -14,7 +14,9 @@
         <tr>
             <th>nom:</th>
             <th>prix:</th>
+            {% if carte != null %}
             <th>PointFidélité</th>
+            {% endif %}
             <th>quantité:</th>
             <th>Total:</th>
             <th></th>
@@ -25,7 +27,9 @@
         <tr>
             <td>{{item.article.nomArticle}}</td>
             <td>{{item.article.PrixArticle}} €</td>
+            {% if carte != null %}
             <td>{{item.article.PointArticle}}</td>
+            {% endif %}
             <td>{{item.quantity}}</td>
             <td>{{item.article.PrixArticle * item.quantity}}€</td>
             <td>
@@ -37,9 +41,10 @@
         {% endfor %}
     </tbody>
     <tfoot>
-        <td colspan="3" class="text-right"> Total : {{totalItem}} €</td>
         <td></td>
-        <td></td>
+        <td colspan="1" class="text-right"> Total : {{totalItem}} €</td>
+        <td colspan="1" class="text-right"> Total : {{totalPoints}} </td>
+        
     </tfoot>
 </table>
        <p> bla bla{{app.user.email}}</p>

@@ -19,7 +19,7 @@ class AchatController extends AbstractController
 {
     #[Route('/panier', name: 'cart_index')]
     public function index(SessionInterface $session,CartService $cartService, UserInterface $user
-    ): Response
+    ,UserService $userService): Response
     {
         $panier = $session->get('panier', []);
         
@@ -32,13 +32,17 @@ class AchatController extends AbstractController
             $total += $totalItem;
         }
 
+        $totalPoints = $cartService->getTotalPoints();
 
 
 
         return $this->render('achat/index.html.twig', [
             'controller_name' => 'AchatController',
             'items' => $panierAvecData,
-            'totalItem' => $total
+            'totalItem' => $total,
+            'totalPoints' => $totalPoints,
+            'carte' => $userService->getCarteFidélité($user)
+
         ]);
     }
 
@@ -56,10 +60,11 @@ class AchatController extends AbstractController
     }
 
     #[Route('/panier/valider', name: 'cart_valider')]
-    public function validerAchat(UserService $userService, UserInterface $user){
+    public function validerAchat(UserService $userService, UserInterface $user, CartService $cartService){
 
         $userService->AddAchat($user);
-        return new Response('Genus created');
+        $cartService->viderCart();
+        return $this->redirectToRoute("app_article");
     }
 
 }
