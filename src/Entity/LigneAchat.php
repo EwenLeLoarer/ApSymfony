@@ -26,6 +26,10 @@ class LigneAchat
     #[ORM\JoinColumn(nullable: false)]
     private ?Achat $leAchat = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Article $leArticle = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +79,18 @@ class LigneAchat
     public function setLeAchat(?Achat $leAchat): self
     {
         $this->leAchat = $leAchat;
+
+        return $this;
+    }
+
+    public function getLeArticle(): ?Article
+    {
+        return $this->leArticle;
+    }
+
+    public function setLeArticle(Article $leArticle): self
+    {
+        $this->leArticle = $leArticle;
 
         return $this;
     }

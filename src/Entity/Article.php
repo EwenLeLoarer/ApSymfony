@@ -17,7 +17,7 @@ class Article
     private ?string $nomArticle = null;
 
     #[ORM\Column]
-    private ?int $prixArticle = null;
+    private ?float $prixArticle = null;
 
     #[ORM\Column]
     private ?int $PointArticle = null;
@@ -45,12 +45,12 @@ class Article
         return $this;
     }
 
-    public function getPrixArticle(): ?int
+    public function getPrixArticle(): ?float
     {
         return $this->prixArticle;
     }
 
-    public function setPrixArticle(int $prixArticle): self
+    public function setPrixArticle(float $prixArticle): self
     {
         $this->prixArticle = $prixArticle;
 

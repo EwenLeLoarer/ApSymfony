@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% block body %}
+
+<div class="row"
+    {% for item in mesAchats %}
+        <div class="col">
+            <p>nombre d'article : {{item.nombreArticle}}</p>
+            <p> total : {{item.total}} €</p>
+            <p>le {{item.date | date("m/d/Y")}}</p>
+            <a href="#" class="btn btn-success">Visualiser</a>
+            
+            <hr></hr>
+        </div>
+
+    {% endfor %}
+</div>
+
+{% endblock %}

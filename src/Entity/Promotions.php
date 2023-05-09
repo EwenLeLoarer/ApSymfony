@@ -19,6 +19,10 @@ class Promotions
     #[ORM\Column]
     private ?float $reduction = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Article $leArticle = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class Promotions
     public function setReduction(float $reduction): self
     {
         $this->reduction = $reduction;
+
+        return $this;
+    }
+
+    public function getLeArticle(): ?Article
+    {
+        return $this->leArticle;
+    }
+
+    public function setLeArticle(Article $leArticle): self
+    {
+        $this->leArticle = $leArticle;
 
         return $this;
     }

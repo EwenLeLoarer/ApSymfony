@@ -53,7 +53,7 @@ class UserService{
             $LigneAchat->setQuantity($item['quantity']);
             $LigneAchat->setSousTotal($item['article']->getPrixArticle() * $item['quantity']);
             $LigneAchat->setSousTotalPoints($item['article']->getPointArticle() * $item['quantity']);
-            
+            $LigneAchat->setLeArticle($item['article']);
             $em = $this->doctrine->getManager();
             $em->persist($LigneAchat);
             $em->flush();
@@ -78,6 +78,7 @@ class UserService{
 
     public function AddPoints($user){
         $total = $this->cartService->getTotalPoints();
+        $total += $user->getLaCarteFidélité()->getpoints();
         $user->getLaCarteFidélité()->setPoints($total);
 
         $em = $this->doctrine->getManager();
@@ -89,6 +90,8 @@ class UserService{
     public function getCarteFidélité($user){
         return $user->getLaCarteFidélité();
     }
+
+
 }
 
 

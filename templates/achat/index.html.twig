@@ -43,12 +43,12 @@
     <tfoot>
         <td></td>
         <td colspan="1" class="text-right"> Total : {{totalItem}} €</td>
+        {% if carte != null %}
         <td colspan="1" class="text-right"> Total : {{totalPoints}} </td>
-        
+        {% endif %}
     </tfoot>
 </table>
-       <p> bla bla{{app.user.email}}</p>
-    <button type="button" class="btn btn-success">Acheter</button>
+       <a href="{{path('cart_valider')}}" class="btn btn-success">valider</a>
 {% endblock %}
 
 
